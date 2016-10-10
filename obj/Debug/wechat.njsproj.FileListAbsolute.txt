@@ -1,0 +1,2 @@
+E:\ll\wx\obj\Debug\wechat.njsprojResolveAssemblyReference.cache
+E:\ll\wx\bin\Microsoft.NodejsTools.WebRole.dll
