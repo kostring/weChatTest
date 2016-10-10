@@ -1,0 +1,19 @@
+{
+  "name": "wechat_self",
+  "version": "0.1.0",
+  "description": " A sample of a wechat project",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "keywords": [
+    "wechat"
+  ],
+  "author": "kostring",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "wechat": "^2.0.3",
+    "wechat-api": "^1.23.0"
+  }
+}
