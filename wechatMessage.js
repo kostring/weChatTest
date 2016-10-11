@@ -200,6 +200,38 @@ function buildImageMessage(mediaId, clientData)
     return XML.buildXML(outputMsg);    
 }
 
+function buildVoiceMessage(mediaId, clientData)
+{
+    var outputMsg = {
+        ToUserName : clientData.clientName,
+        FromUserName : config.serverName,
+        CreateTime : Date.now(),
+        MsgType : 'voice',
+        Voice : {
+            MediaId : mediaId
+        }
+    };
+    console.log(outputMsg);
+    return XML.buildXML(outputMsg);    
+}
+
+function buildVideoMessage(mediaId, clientData, title, description)
+{
+    var outputMsg = {
+        ToUserName : clientData.clientName,
+        FromUserName : config.serverName,
+        CreateTime : Date.now(),
+        MsgType : 'video',
+        Video : {
+            MediaId : mediaId
+        }
+    };
+    if(title) outputMsg.Video.Title = title;
+    if(description) outputMsg.Video.Description = description;
+
+    console.log(outputMsg);
+    return XML.buildXML(outputMsg);    
+}
 
 module.exports.parseIncomingMessage = parseIncomingMessage;
 module.exports.buildTextMessage = buildTextMessage;
