@@ -3,10 +3,9 @@ var http = require('http');
 var wechat = require('wechat');
 var WECHATAPI = require('wechat-api');
 var crypto = require("crypto");
+
 var tokenManager = require("./tokenManager")();
 var wechatMessage = require("./wechatMessage");
-var xml2json = require('xml2json');
-
 var users = require('./user.js');
 var game = require('./Game.js');
 
