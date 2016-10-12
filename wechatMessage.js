@@ -233,6 +233,50 @@ function buildVideoMessage(mediaId, clientData, title, description)
     return XML.buildXML(outputMsg);    
 }
 
+function buildMusicMessage(mediaId, clientData, title, description, musicUrl, HQMusicUrl, thumbMediaId)
+{
+    var outputMsg = {
+        ToUserName : clientData.clientName,
+        FromUserName : config.serverName,
+        CreateTime : Date.now(),
+        MsgType : 'music',
+        Music : {
+            MediaId : mediaId
+        }
+    };
+    if(title) outputMsg.Music.Title = title;
+    if(description) outputMsg.Music.Description = description;
+    if(musicUrl) outputMsg.Music.MusicUrl = musicUrl;
+    if(HQMusicUrl) outputMsg.Music.HQMusicUrl = HQMusicUrl;
+    if(thumbMediaId) outputMsg.Music.thumbMediaId = ThumbMediaId;
+
+    console.log(outputMsg);
+    return XML.buildXML(outputMsg);    
+}
+
+function buildNewsMessage(mediaId, clientData, items)
+{
+    var outputMsg = {
+        ToUserName : clientData.clientName,
+        FromUserName : config.serverName,
+        CreateTime : Date.now(),
+        MsgType : 'news',
+        ArticleCount : items.length,
+        Articles : []
+    };
+    items.foreach((element)=>{
+        var item = {};
+        if(element.title) item.Title = element.title;
+        if(element.description) item.Description = element.description;
+        if(element.picUrl) item.PicUrl = element.picUrl;
+        if(element.url) item.Url = element.url;
+        outputMsg.Articles.push(item);
+    });
+
+    console.log(outputMsg);
+    return XML.buildXML(outputMsg);    
+}
+
 module.exports.parseIncomingMessage = parseIncomingMessage;
 module.exports.buildTextMessage = buildTextMessage;
 module.exports.buildImageMessage = buildImageMessage;
