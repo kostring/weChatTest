@@ -3,10 +3,16 @@ var tokenManager = require('./tokenManager.js');
 
 var permanmentMaterialList = [];
 
+var logHead = "MEDIAMGMT";
+function log(data)
+{
+    console.log(logHead + ":\t" + data);
+}
+
 /*
  * arguments: object of arguments
  */
-function sendPostRequest(path, arguments, data, context, callback, errCallBack)
+function sendPostRequest(path, arguments, data, callback)
 {
     var reqPath = path + '?access_token=' + tokenManager.getAccessToken();
     if(arguments)
@@ -17,31 +23,51 @@ function sendPostRequest(path, arguments, data, context, callback, errCallBack)
         }
     }
 
-    var req = https.request({
-        hostname : 'api.weixin.qq.com',
-        port : 443,
-        path : reqPath,
-        method : 'POST'
-    }, (res)=>{
+    var req = https.request(
+        {
+            hostname : 'api.weixin.qq.com',
+            port : 443,
+            path : reqPath,
+            method : 'POST'
+        }, 
+        (res)=>
+        {
+            var returnData = '';
+            res.on('data', (d)=>{
+                returnData += d;
+            });
+            res.on('end', ()=>{
+                if(callback)
+                    callback(returnData);
+            });
+        }
+    );
+    req.on('error', (e)=>{
+        log(e);
+    });
+    req.write(data);
+    req.end();
+}
+
+module.exports.uploadTempMedia = function(mediaType, mediaData, callback, errCallBack)
+{
+    var path = '/cgi-bin/media/upload'
+    var arguments = {
+        type : mediaType
+    }
+    sendPostRequest(path, arguments, mediaData, (response)=>{
         var response = JSON.parse(res);
         if(response.errcode)
         {
             if(errCallBack)
-                errCallBack(context, response);
+                errCallBack(response);
         }
         else
         {
             if(callback)
-                callback(context, response);
+                callback(response);
         }
     });
-    req.write(JSON.stringify(data));
-    req.end();
-}
-
-module.exports.uploadTempMaterial = function(type, data)
-{
-
 }
 
 module.exports.downLoadTempMaterial = function(media_ID)
